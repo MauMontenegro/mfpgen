@@ -5,7 +5,6 @@ from pathlib import Path
 
 from rngenerators.rngenerators import CreateGenerators
 from environments.metric_tree import rndtree_metric
-import utils.utils
 
 def mfptgen():
     args = argParser(sys.argv[:])  # Input Arguments
@@ -46,7 +45,6 @@ def mfptgen():
     exp_config['experiment']['delta'] = [.25, .50]  # [A,B] We want agent at a distance between A% - B% of total scale
     ############################################
     c = 0
-
     # Create N instances for each Tree Size Experiment in Grid
     for n_nodes in grid:
         node_path = master_path + "/" + 'Size_' + str(n_nodes) + '/'
@@ -76,3 +74,6 @@ def argParser(args):
         '--size', '-s', type=int,
         help="Number of instances for each node size")
     return parser.parse_known_args(args)[0]
+
+# Init Program
+mfptgen()

@@ -1,36 +1,5 @@
-import matplotlib.pyplot as plt
 import networkx as nx
-
-def write_FFP_file(dimension, edges, coords, fire, output_path):
-    # Format file for c++ program
-    with open(output_path, "w") as writer:
-        writer.write("DIMENSION: {}\n".format(dimension))
-        writer.write("FIRE_START: {}\n".format(fire))
-        writer.write("FIREFIGHTER: {}\n".format(dimension))
-        # Coord display
-        writer.write("DISPLAY_DATA_SECTION\n")
-        for i in range(dimension + 1):
-            coord = coords[i]
-            writer.write("{} {} {}\n".format(i, coord[0], coord[1]))
-        # Edge section
-        writer.write("EDGE_SECTION\n")
-        for e in edges:
-            writer.write("{} {}\n".format(e[0], e[1]))
-
-
-def write_FFP_summary(instance, output_file):
-    # Graph Summary file
-    with open(output_file, "w") as writer:
-        writer.write("TREE SEED: {}\n".format(instance["seed"]))
-        writer.write("DIMENSION: {}\n".format(instance["N"]))
-        writer.write("FIRE_START: {}\n".format(instance["start_fire"]))
-        writer.write("FIREFIGHTER: {}\n".format(instance["N"]))
-        writer.write("DELTA: {}\n".format(instance["delta"]))
-        writer.write("ROOT DEGREE: {}\n".format(instance["root_degree"]))
-        writer.write("MAX DEGREE: {}\n".format(instance["max_degree"]))
-        writer.write("TREE HEIGHT: {}\n".format(instance["tree_height"]))
-        writer.write("SCALE_DISTANCE: {}\n".format(instance["scale"]))
-
+import matplotlib.pyplot as plt
 
 def DrawingInstance(layout, T, fire, N, path, file):
     """ Draw networkx Tree with current layout and node types
@@ -90,3 +59,32 @@ def DrawingInstance(layout, T, fire, N, path, file):
     graph.savefig(file_path, format="PNG")
     plt.close()
     return remaining_nodes, burnt_nodes
+
+def write_FFP_file(dimension, edges, coords, fire, output_path):
+    # Format file for c++ program
+    with open(output_path, "w") as writer:
+        writer.write("DIMENSION: {}\n".format(dimension))
+        writer.write("FIRE_START: {}\n".format(fire))
+        writer.write("FIREFIGHTER: {}\n".format(dimension))
+        # Coord display
+        writer.write("DISPLAY_DATA_SECTION\n")
+        for i in range(dimension + 1):
+            coord = coords[i]
+            writer.write("{} {} {}\n".format(i, coord[0], coord[1]))
+        # Edge section
+        writer.write("EDGE_SECTION\n")
+        for e in edges:
+            writer.write("{} {}\n".format(e[0], e[1]))
+
+def write_FFP_summary(instance, output_file):
+    # Graph Summary file
+    with open(output_file, "w") as writer:
+        writer.write("TREE SEED: {}\n".format(instance["seed"]))
+        writer.write("DIMENSION: {}\n".format(instance["N"]))
+        writer.write("FIRE_START: {}\n".format(instance["start_fire"]))
+        writer.write("FIREFIGHTER: {}\n".format(instance["N"]))
+        writer.write("DELTA: {}\n".format(instance["delta"]))
+        writer.write("ROOT DEGREE: {}\n".format(instance["root_degree"]))
+        writer.write("MAX DEGREE: {}\n".format(instance["max_degree"]))
+        writer.write("TREE HEIGHT: {}\n".format(instance["tree_height"]))
+        writer.write("SCALE_DISTANCE: {}\n".format(instance["scale"]))

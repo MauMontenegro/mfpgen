@@ -2,6 +2,7 @@ import numpy as np
 import json
 import os
 import networkx as nx
+from .utils.utils import DrawingInstance,write_FFP_file,write_FFP_summary
 
 class ExperimentLog:
     """
@@ -65,6 +66,7 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
         Config: Array containing environment or metric config
         Plotting: Array containing drawing config
     """
+
     for instance in range(config['experiment']['instances']):
         instance_path = path + "Instance_" + str(instance) + "/"  # Create Instance Specific Folder
         N = n_nodes
@@ -137,6 +139,7 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
         pos[N] = [a_x_pos, a_y_pos]
 
         # Draw Instance
+
         remaining_nodes, burnt_nodes = DrawingInstance(pos, T, starting_fire, N, instance_path, file)
 
         levels = nx.single_source_shortest_path_length(T, starting_fire)  # Level of nodes in rooted Tree

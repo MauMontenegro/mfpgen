@@ -1,3 +1,4 @@
+import os.path
 from pathlib import Path
 import numpy as np
 
@@ -20,10 +21,17 @@ class CreateGenerators:
         self.exp_selected = 0
 
         if defpath is None:
-            path = Path.cwd() / 'Experiments' / "Seeds"
+            path = Path.cwd() / 'Experiments'
         else:
             path = Path(defpath)
 
+        if not path.exists():
+            os.makedirs(path)
+            path = Path.cwd() / 'Experiments' / 'Seeds'
+            f = open(path, "w")
+            f.close()
+
+        path = Path.cwd() / 'Experiments' / 'Seeds'
         # Generate a Seed_Sequence with  default entropy
         if self.Load in ('no', 'false', 'f', 'n', '0'):
             self.rnd_sq = np.random.SeedSequence()
@@ -33,8 +41,6 @@ class CreateGenerators:
         # Select from current seed directory to reproduce experiment
         else:
             print("Loading a Seed Sequence")
-            if not path.exists() or not path.is_file():
-                raise ValueError('Experiment Path either does not exists or is not a File')
             file = open(path, 'rt')
             # Display Seeds with their selection index
             f = file.readlines()
@@ -46,7 +52,7 @@ class CreateGenerators:
             while True:
                 select = int(input("Insert index for desired seed to reproduce experiment: "))
                 self.exp_selected = select
-                if select >= 0 and select < self.n_seeds:
+                if 0 <= select < self.n_seeds:
                     break
                 print('Error: {} is not a valid option, please try again'.format(select))
             print("\nYou have selected experiment: {}".format(f[select]))

@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 def DrawingInstance(layout, T, fire, N, path, file):
-    """ Draw networkx Tree with current layout and node types
+    """ Draw networkx Tree with current layout
 
     :param layout: Tree nodes layout positions
     :param T: networkx Tree with agent position included
@@ -30,9 +30,9 @@ def DrawingInstance(layout, T, fire, N, path, file):
     fig, ax = plt.subplots()
     options = {"edgecolors": "tab:gray", "node_size": 300, "alpha": 1}
     nx.draw(T, layout, with_labels=True, font_size=10, ax=ax)
-    nx.draw_networkx_nodes(T, layout, nodelist=burnt_nodes, node_color='#e33434', label="Ignition", **options)
+    nx.draw_networkx_nodes(T, layout, nodelist=burnt_nodes, node_color='#e33434', label="Fire", **options)
     nx.draw_networkx_nodes(T, layout, nodelist=[N], node_color='#34e3e0', label="Firefighter", **options)
-    nx.draw_networkx_nodes(T, layout, nodelist=remaining_nodes, node_color='#62fa69', label="Remaining", **options)
+    nx.draw_networkx_nodes(T, layout, nodelist=remaining_nodes, node_color='#62fa69', label="Unprotected", **options)
 
     # Drawing edges
     nx.draw_networkx_edges(T, layout, width=1.0, alpha=0.8, edge_color='#959895')

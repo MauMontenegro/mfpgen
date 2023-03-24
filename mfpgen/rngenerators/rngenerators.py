@@ -2,7 +2,7 @@ import os.path
 from pathlib import Path
 import numpy as np
 
-class CreateGenerators:
+class RNGenerators:
     """
     Create Random Number Generators
 
@@ -10,8 +10,7 @@ class CreateGenerators:
     :param Load: Selection fLag for load on experiment or create one
     :param grid: Array of Total Tree Nodes [10 20 30]
     :param n_seeds: Number of existing experiment seeds
-    :param exp_selected: Selected Experiment
-    """
+    :param exp_selected: Selected Experiment    """
 
     def __init__(self, grid, N, Load, defpath=None):
         self.N = N
@@ -27,11 +26,10 @@ class CreateGenerators:
 
         if not path.exists():
             os.makedirs(path)
-            path = Path.cwd() / 'Experiments' / 'Seeds'
-            f = open(path, "w")
-            f.close()
 
         path = Path.cwd() / 'Experiments' / 'Seeds'
+        f = open(path, "w")
+        f.close()
         # Generate a Seed_Sequence with  default entropy
         if self.Load in ('no', 'false', 'f', 'n', '0'):
             self.rnd_sq = np.random.SeedSequence()

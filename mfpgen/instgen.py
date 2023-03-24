@@ -3,13 +3,14 @@ import argparse
 import sys
 from pathlib import Path
 
-from rngenerators.rngenerators import CreateGenerators
+from rngenerators.rngenerators import RNGenerators
 from environments.metric_tree import rndtree_metric
+from constants import *
 
 def mfptgen():
-    args = argParser(sys.argv[:])  # Input Arguments
-    Generator = CreateGenerators(args.grid, args.size, args.load)  # Random Number Generator Class
-    rnd_generators, sq, grid, N, n_seeds, exp_selected = Generator.Create()  # Create RNG_seeds for each graph
+    args = argParser(sys.argv[:])
+    Generator = RNGenerators(args.grid, args.size, args.load)
+    rnd_generators, sq, grid, N, n_seeds, exp_selected = Generator.Create()
     if args.load in ('no', 'false', 'f', 'n', '0', 'False'):
         exp_string = str(n_seeds) + " " + str(sq.entropy) + " " + str(grid) + " " + str(N) + "\n"
         fle = Path('Experiments/Seeds')
@@ -38,11 +39,12 @@ def mfptgen():
     exp_config['experiment']['env_type'] = 'rnd_tree'
     exp_config['experiment']['env_metric'] = 'metric'
     exp_config['experiment']['instances'] = N
+
     # Configurable Experiment Parameters
-    exp_config['experiment']['scale'] = 1
-    exp_config['experiment']['root_degree'] = 3
-    exp_config['experiment']['Env_Update'] = 1
-    exp_config['experiment']['delta'] = [.25, .50]  # [A,B] We want agent at a distance between A% - B% of total scale
+    exp_config['experiment']['scale'] = SCALE
+    exp_config['experiment']['root_degree'] = ROOT_DEGREE
+    exp_config['experiment']['Env_Update'] = UPDATE
+    exp_config['experiment']['delta'] = [DELTA_DOWN, DELTA_UP]  # [A,B] We want agent at a distance between A% - B% of total scale
     ############################################
     c = 0
     # Create N instances for each Tree Size Experiment in Grid
@@ -54,6 +56,7 @@ def mfptgen():
         batch_generators = rnd_generators[c:c + N]  # Partition Generators total/N
         input = rndtree_metric(exp_config, node_path, file, n_nodes, batch_generators)
         c += N
+
 
 def argParser(args):
     parser = argparse.ArgumentParser(
@@ -74,6 +77,7 @@ def argParser(args):
         '--size', '-s', type=int,
         help="Number of instances for each node size")
     return parser.parse_known_args(args)[0]
+
 
 # Init Program
 mfptgen()

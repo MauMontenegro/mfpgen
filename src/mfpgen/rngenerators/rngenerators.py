@@ -28,8 +28,9 @@ class RNGenerators:
             os.makedirs(path)
 
         path = Path.cwd() / 'Experiments' / 'Seeds'
-        f = open(path, "w")
-        f.close()
+        if os.path.isfile(path) == False:
+            print("File does not exists")
+            path.touch()
         # Generate a Seed_Sequence with  default entropy
         if self.Load in ('no', 'false', 'f', 'n', '0'):
             self.rnd_sq = np.random.SeedSequence()

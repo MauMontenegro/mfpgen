@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/mfpgen.iml" filepath="$PROJECT_DIR$/.idea/mfpgen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mfpgen-project/.idea/mfpgen-project.iml" filepath="$PROJECT_DIR$/../mfpgen-project/.idea/mfpgen-project.iml" />
     </modules>
   </component>
 </project>

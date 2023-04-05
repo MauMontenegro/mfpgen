@@ -7,35 +7,35 @@ from rngenerators.rngenerators import RNGenerators
 from environments.metric_tree import rndtree_metric
 from constants import *
 
+
 def mfptgen():
     args = argParser(sys.argv[:])
+    # Generate individual random number generators for each instance
     Generator = RNGenerators(args.grid, args.size, args.load)
     rnd_generators, sq, grid, N, n_seeds, exp_selected = Generator.Create()
     if args.load in ('no', 'false', 'f', 'n', '0', 'False'):
         exp_string = str(n_seeds) + " " + str(sq.entropy) + " " + str(grid) + " " + str(N) + "\n"
         fle = Path('Experiments/Seeds')
-        # Create seed file if not exist
-        fle.touch(exist_ok=True)
         # Write Experiment string
         seeds_file = open(fle, 'a')
         seeds_file.write(exp_string)
         seeds_file.close()
         # Create Master Experiment Path if is new
+        # TODO: Number of experiments can ba obtained by the seeds file
         n_experiments = len(next(os.walk('Experiments'))[1])  # Get number of next experiment
         master_path = "Experiments/Experiment_" + str(n_experiments)
-        if os.path.exists(master_path) == False:
+        if not os.path.exists(master_path):
             os.mkdir(master_path)
     else:
-        master_path = "Experiments/Experiment_" + str(exp_selected)
-        if os.path.exists(master_path) == False:
+        master_path: str = "Experiments/Experiment_" + str(exp_selected)
+        if not os.path.exists(master_path):
             os.mkdir(master_path)
-
     # Convert grid string to array
     grid = [int(element) for element in grid.split(",")]
 
     # Experiment Environment Parameters
-    exp_config = {}
-    exp_config['experiment'] = {}
+    # TODO: Avoid "experiment label in exp_config"
+    exp_config = {'experiment': {}}
     exp_config['experiment']['env_type'] = 'rnd_tree'
     exp_config['experiment']['env_metric'] = 'metric'
     exp_config['experiment']['instances'] = N
@@ -44,7 +44,8 @@ def mfptgen():
     exp_config['experiment']['scale'] = SCALE
     exp_config['experiment']['root_degree'] = ROOT_DEGREE
     exp_config['experiment']['Env_Update'] = UPDATE
-    exp_config['experiment']['delta'] = [DELTA_DOWN, DELTA_UP]  # [A,B] We want agent at a distance between A% - B% of total scale
+    exp_config['experiment']['delta'] = [DELTA_DOWN,
+                                         DELTA_UP]  # [A,B] We want agent at a distance between A% - B% of total scale
     ############################################
     c = 0
     # Create N instances for each Tree Size Experiment in Grid
@@ -54,7 +55,7 @@ def mfptgen():
             os.mkdir(node_path)
         file = 'img_' + str(n_nodes)
         batch_generators = rnd_generators[c:c + N]  # Partition Generators total/N
-        input = rndtree_metric(exp_config, node_path, file, n_nodes, batch_generators)
+        rndtree_metric(exp_config, node_path, file, n_nodes, batch_generators)  # Create Instance
         c += N
 
 

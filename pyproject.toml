@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mfpgen"
+authors = [
+    {name = "Mauro Alejandro Montenegro", email = "m.montenegro.meza@gmail.com"},
+]
+description = "Generic Description"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["Firefighter Problem", "Graphs"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version<"3.8"',
+]
+dynamic = ["version"]

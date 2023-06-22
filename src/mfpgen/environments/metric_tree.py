@@ -2,7 +2,7 @@ import numpy as np
 import json
 import os
 import networkx as nx
-from .utils.utils import DrawingInstance,write_FFP_file,write_FFP_summary
+from .utils.utils import DrawingInstance, write_FFP_file, write_FFP_summary
 
 class ExperimentLog:
     """
@@ -70,13 +70,13 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
     for instance in range(config['experiment']['instances']):
         instance_path = path + "Instance_" + str(instance) + "/"  # Create Instance Specific Folder
         N = n_nodes
-        n_instances = config['experiment']['instances']  # Number of instances per Node Size
+        # n_instances = config['experiment']['instances']  # Number of instances per Node Size
         scale = config['experiment']['scale']  # Edge distance scale
         r_degree = config['experiment']['root_degree']  # Force Tree to have a root degree of this size
-        env_update = config['experiment']['Env_Update']  # Update ratio of environment respect to agent
+        # env_update = config['experiment']['Env_Update']  # Update ratio of environment respect to agent
         delta = config['experiment']['delta']
 
-        # Random Variables. Use rnd_generator specific to each instance.
+        # Random Variables. Use a rnd_generator specific to each instance.
         # Generate Only Trees with fire root node with desired degree
         starting_fire = rnd_generators[instance].integers(0, N - 1)
         rootd_check = True
@@ -86,15 +86,16 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
             pos = nx.spring_layout(T, seed=int(tree_seed), scale=scale)  # Use a spring layout to draw nodes
             if T.degree[starting_fire] == r_degree:
                 rootd_check = False
-        # Limit agent distance from root
+
+        # Agent Distance from ignition root
         limit_agent_radius_inf = delta[0] * scale
         limit_agent_radius_sup = delta[1] * scale
 
         # Needed Structures
         T_Ad = np.zeros((N + 1, N + 1))  # Adjacency Matrix that contains distances for all nodes including agent
-        all_nodes = {}  # Dictionary to store all nodes
-        saved_nodes = []  # Array of saved nodes for Drawing
-        initial_pos = N  # Put agent as last node in Graph
+        # all_nodes = {}  # Dictionary to store all nodes
+        # saved_nodes = []  # Array of saved nodes for Drawing
+        # initial_pos = N  # Put agent as last node in Graph
         instance_ = {}  # dictionary to save instance parameters
 
         # Save Instance
@@ -139,7 +140,6 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
         pos[N] = [a_x_pos, a_y_pos]
 
         # Draw Instance
-
         remaining_nodes, burnt_nodes = DrawingInstance(pos, T, starting_fire, N, instance_path, file)
 
         levels = nx.single_source_shortest_path_length(T, starting_fire)  # Level of nodes in rooted Tree
@@ -148,8 +148,18 @@ def rndtree_metric(config, path, file, n_nodes, rnd_generators):
         max_degree = max(degrees, key=lambda item: item[1])[1]
         max_level = max(levels.values())  # Level of Tree
 
+        Nodes = list(T.nodes)  # List of Nodes
+        Nodes.remove(N)  # Remove last node in list (agent node)
+        Nodes.sort()  # Sort nodes in ascendant way
+        weights = np.zeros(N)  # Container for node weights
+        T_=T = nx.bfs_tree(T, starting_fire)
+        i=0
+        for node in Nodes:
+            weights[i] = len(nx.descendants(T_, node)) + 1
+            i += 1
+
         nx.write_adjlist(T, instance_path + 'MFF_Tree.adjlist')  # Saving Full Distance Matrix
-        np.save(instance_path + "FDM_MFFP.npy", T_Ad_Sym)  # Saving Numpy array full distance matrix
+        np.savez(instance_path + "FDM_MFFP.npz", T_Ad_Sym,weights)  # Saving Numpy array full distance matrix and weight matrix
 
         # Instance Variables
         instance_['N'] = N

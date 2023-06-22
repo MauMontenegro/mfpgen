@@ -7,10 +7,10 @@ name = "mfpgen"
 authors = [
     {name = "Mauro Alejandro Montenegro", email = "m.montenegro.meza@gmail.com"},
 ]
-description = "Generic Description"
+description = "Package to generate MFP instances"
 readme = "README.md"
 requires-python = ">=3.7"
-keywords = ["Firefighter Problem", "Graphs"]
+keywords = ["Firefighter Problem", "Graphs","Tree-Structure"]
 license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",

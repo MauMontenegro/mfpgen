@@ -21,7 +21,6 @@ def mfptgen():
         seeds_file.write(exp_string)
         seeds_file.close()
         # Create Master Experiment Path if is new
-        # TODO: Number of experiments can ba obtained by the seeds file
         n_experiments = len(next(os.walk('Experiments'))[1])  # Get number of next experiment
         master_path = "Experiments/Experiment_" + str(n_experiments)
         if not os.path.exists(master_path):

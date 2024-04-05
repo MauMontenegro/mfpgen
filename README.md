@@ -1,5 +1,7 @@
 # Moving Firefighter Problem: Tree Instance Generator
 
+![](images/MFPT.png)
+
 This repository offers a tree instance generator tailored for the Moving Firefighter Problem, as detailed in the accompanying publication (Moving Firefighter Problem).
 The generator operates by creating random 'networkx' tree objects, utilizing a distinct seed sequence with default entropy for each experiment. Subsequently, it introduces
 an external 'agent' node into the tree structure. The original adjacency matrix is then populated with escalated metric distances between all nodes and is called FDM matrix.
@@ -58,5 +60,10 @@ Experiments
 - layout_MFF.json: It stores the embedded positions of all nodes in the plane.
 - MFF_Tree.adjlist: An adjacency list representing the tree instance.
 - SUMMARY.info: Provides general information about the experiment.
+- Seeds.txt contains the Seedsequence of the experiment along the initial parameters.
+
+An illustration of a generated instance comprising 10 nodes would appear as follows:
+
+![](images/img_10.png)
 
 ---
